@@ -42,6 +42,15 @@ def save_ranking(ranking):
         )
 
 
+def rankings():
+    query = RankingLog.select(
+        Entry.name,
+        EntryRankingLog,
+        RankingLog,
+    ).join(EntryRankingLog).join_from(EntryRankingLog, Entry)
+    return query
+
+
 def recent_rankings(hour_range=6):
     # rankings = RankingLog.select(
     #     RankingLog.created,
