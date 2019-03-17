@@ -1,5 +1,5 @@
 import datetime
-from peewee import *
+from peewee import SqliteDatabase, Model, TextField, DateTimeField, ForeignKeyField, IntegerField, JOIN
 
 DATABASE = "dev_ranking.db"
 
@@ -58,19 +58,26 @@ def recent_rankings(hour_range=6):
     # ).order_by(
     #     RankingLog.created.desc()
     # ).limit(hour_range).join(EntryRankingLog, JOIN.LEFT_OUTER).where(RankingLog.id == EntryRankingLog.ranking_log)
-    Latest = RankingLog.alias()
-    latest_query = Latest.select().order_by(Latest.created.desc()).limit(hour_range)
-    query = RankingLog.select(
-        Entry.name,
-        EntryRankingLog,
-        RankingLog,
-    ).join(EntryRankingLog).join_from(EntryRankingLog, Entry)
+    # Latest = RankingLog.alias()
+    # latest_query = Latest.select().order_by(Latest.created.desc()).limit(hour_range)
+    # print(latest_query.sql())
 
     # query = EntryRankingLog.select(
-    #     EntryRankingLog.rank,
-    #     Entry.name,
-    #     RankingLog.created,
-    # ).join(Entry).join_from(Latest, JOIN.RIGHT_OUTER)
+    #     EntryRankingLog.id,
+    #     Entry.id,
+    #     RankingLog.id,
+    # ).join(Entry, ).join_from(
+    #     EntryRankingLog,
+    #     RankingLog,
+    # ).order_by(RankingLog.created.desc()).limit(hour_range)
+    query = RankingLog.select(
+        EntryRankingLog,
+        Entry,
+        RankingLog,
+    ).join(EntryRankingLog, ).join_from(
+        EntryRankingLog,
+        Entry,
+    ).order_by(RankingLog.created.desc()).limit(hour_range)
 
     # rankings = (
     #     RankingLog.select(RankingLog.created,
@@ -88,6 +95,17 @@ def recent_rankings(hour_range=6):
     # )
     print(query.sql())
 
+    return query
+
+
+def recent():
+    query = Entry.select(
+        Entry.name,
+        EntryRankingLog.rank,
+        RankingLog.created,
+    ).join(EntryRankingLog).join(RankingLog)
+
+    print(query.sql())
     return query
 
 
