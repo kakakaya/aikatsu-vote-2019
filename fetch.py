@@ -4,7 +4,7 @@ import json
 
 from bs4 import BeautifulSoup
 import requests
-from models import init_db, save_ranking, recent_rankings
+from models import init_db, save_ranking, recent_rankings, recent_rankings_for_entry
 
 
 def get_ranking():
@@ -42,13 +42,12 @@ def fetch():
 def main():
     init_db()
 
-    for ranking in recent_rankings(hour_range=2):
+    for ranking in recent_rankings_for_entry("ユリカ"):
         print(
             ranking.rank,
             ranking.entry.name,
             ranking.ranking_log.created.isoformat(timespec='seconds'),
         )
-        pass
 
 
 if __name__ == '__main__':

@@ -67,8 +67,26 @@ def recent_rankings(hour_range=6):
     return query
 
 
-def entry_ranking_history(entry_name, hour_range=6):
-    pass
+def recent_rankings_for_entry(entry_name, desc=True, hour_range=24):
+    """Returns ranking for entry.
+    """
+    if desc:
+        ranking_order = RankingLog.created.desc()
+    else:
+        ranking_order = RankingLog.created.asc()
+    recent_logs = RankingLog.select(RankingLog.id).order_by(ranking_order).limit(hour_range)
+
+    query = (
+        EntryRankingLog.select(Entry, RankingLog, EntryRankingLog).join_from(
+            EntryRankingLog,
+            Entry,
+        ).join_from(
+            EntryRankingLog,
+            RankingLog,
+        ).where(EntryRankingLog.ranking_log.in_(recent_logs) & Entry.name % "*{}*".format(entry_name))
+    )
+
+    return query
 
 
 def recent():
