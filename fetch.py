@@ -41,19 +41,12 @@ def fetch():
 
 def main():
     init_db()
-    # for ranking in recent():
-    #     print(ranking.__dict__)
-    #     # print(ranking.created.strftime("%Y/%m/%d %H:%M:%S"))
-    #     print(ranking.created.isoformat(timespec='seconds'), ranking.entryrankinglog.rank, ranking.name)
 
-    for ranking in recent_rankings(hour_range=1):
-        print("ranking.__dict__:", ranking.__dict__)
-        print("ranking.entryrankinglog.__dict__", ranking.entryrankinglog.__dict__)
-        # print(ranking.created.strftime("%Y/%m/%d %H:%M:%S"))
+    for ranking in recent_rankings(hour_range=2):
         print(
-            ranking.entryrankinglog.rank,
-            ranking.entryrankinglog.entry.name,
-            ranking.created.isoformat(timespec='seconds'),
+            ranking.rank,
+            ranking.entry.name,
+            ranking.ranking_log.created.isoformat(timespec='seconds'),
         )
         pass
 

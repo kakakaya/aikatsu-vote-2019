@@ -52,50 +52,23 @@ def rankings():
 
 
 def recent_rankings(hour_range=6):
-    # rankings = RankingLog.select(
-    #     RankingLog.created,
-    #     EntryRankingLog.rank,
-    # ).order_by(
-    #     RankingLog.created.desc()
-    # ).limit(hour_range).join(EntryRankingLog, JOIN.LEFT_OUTER).where(RankingLog.id == EntryRankingLog.ranking_log)
-    # Latest = RankingLog.alias()
-    # latest_query = Latest.select().order_by(Latest.created.desc()).limit(hour_range)
-    # print(latest_query.sql())
+    recent_logs = RankingLog.select(RankingLog.id).order_by(RankingLog.created.desc()).limit(hour_range)
 
-    # query = EntryRankingLog.select(
-    #     EntryRankingLog.id,
-    #     Entry.id,
-    #     RankingLog.id,
-    # ).join(Entry, ).join_from(
-    #     EntryRankingLog,
-    #     RankingLog,
-    # ).order_by(RankingLog.created.desc()).limit(hour_range)
-    query = RankingLog.select(
-        EntryRankingLog,
-        Entry,
-        RankingLog,
-    ).join(EntryRankingLog, ).join_from(
-        EntryRankingLog,
-        Entry,
-    ).order_by(RankingLog.created.desc()).limit(hour_range)
-
-    # rankings = (
-    #     RankingLog.select(RankingLog.created,
-    # # EntryRankingLog.rank,
-    # # Entry.name,
-    #                       ).order_by(RankingLog.created.desc()).limit(hour_range)
-    # )
-
-    # rankings = rankings.join(
-    #     EntryRankingLog,
-    #     JOIN.LEFT_OUTER,
-    # ).join(
-    #     Entry,
-    #     JOIN.LEFT_OUTER,
-    # )
-    print(query.sql())
+    query = (
+        EntryRankingLog.select(Entry, RankingLog, EntryRankingLog).join_from(
+            EntryRankingLog,
+            Entry,
+        ).join_from(
+            EntryRankingLog,
+            RankingLog,
+        ).where(EntryRankingLog.ranking_log.in_(recent_logs))
+    )
 
     return query
+
+
+def entry_ranking_history(entry_name, hour_range=6):
+    pass
 
 
 def recent():
@@ -110,6 +83,5 @@ def recent():
 
 
 def init_db():
-    # ranking = get_ranking()
     db.connect()
     db.create_tables([Entry, RankingLog, EntryRankingLog])
