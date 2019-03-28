@@ -26,15 +26,15 @@ def api_history():
 
 @app.route("/api/entry/<entry_name>")
 def api_entry(entry_name):
-    print(entry_name)
-    for ranking in recent_rankings_for_entry(entry_name, hour_range=48):
-        print(
-            ranking.rank,
-            ranking.entry.name,
-            ranking.ranking_log.created.isoformat(timespec='seconds'),
-        )
+    response = []
+    for ranking in recent_rankings_for_entry(entry_name, hour_range=24 * 12):
+        response.append({
+            'rank': ranking.rank,
+            'name': ranking.entry.name,
+            'timestamp': ranking.ranking_log.created.isoformat(timespec='seconds'),
+        })
     return Response(
-        json.dumps([]),    # TODO: impl
+        json.dumps(response, ensure_ascii=False),
         mimetype='application/json',
         headers=api_headers,
     )
