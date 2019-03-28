@@ -1,8 +1,8 @@
-from flask import Flask, Response, abort, redirect
+from flask import Flask, Response, abort, redirect, render_template
 import json
 from models import recent_rankings, recent_rankings_for_entry
 
-app = Flask(__name__, static_url_path='', static_folder='./public')
+app = Flask(__name__, static_url_path='', static_folder='./public', template_folder='./public')
 
 api_headers = {'Cache-Control': 'no-cache', 'Access-Control-Allow-Origin': '*'}
 
@@ -48,17 +48,18 @@ entries = [
 
 @app.route("/")
 def index():
-    return app.send_static_file('index.html')
+    return render_template('index.html')
 
 
 @app.route("/entry/<entry_name>")
 def entry(entry_name):
     if entry_name not in entries:
         abort(404)
-    return Response()
+    print(entry_name)
+    return render_template('entry.html', entry=entry_name)
 
 
-@app.route("/api/")
+@app.route("/api/v1/history/")
 def api_history():
     for ranking in recent_rankings(hour_range=3):
         print(

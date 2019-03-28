@@ -1,58 +1,46 @@
-var RssBox = React.createClass({
-  loadRssFromServer: function() {
-    $.ajax({
-      url: this.props.url,
-      dataType: 'json',
-      cache: false,
-      success: function(data) {
-        this.setState({data: data});
-      }.bind(this),
-      error: function(xhr, status, err) {
-        console.error(this.props.url, status, err.toString());
-      }.bind(this)
-    });
-  },
-  getInitialState: function() {
-    return {data: []};
-  },
-  componentDidMount: function() {
-    this.loadRssFromServer();
-    setInterval(this.loadRssFromServer, this.props.pollInterval);
-  },
-  render: function() {
-    return (
-      <div className="rssBox">
-        <h1 className="siteTitle">GIGAZINE RSS</h1>
-        <RssList data={this.state.data} />
-      </div>
-    );
-  }
-});
+const entries = [
+    "星宮いちご",
+    "霧矢あおい",
+    "紫吹蘭",
+    "神崎美月",
+    "有栖川おとめ",
+    "藤堂ユリカ",
+    "一ノ瀬かえで",
+    "北大路さくら",
+    "三ノ輪ヒカリ",
+    "神谷しおん",
+    "音城セイラ",
+    "冴草きい",
+    "風沢そら",
+    "夏樹みくる",
+    "音城ノエル",
+    "大空あかり",
+    "氷上スミレ",
+    "新条ひなき",
+    "紅林珠璃",
+    "服部ユウ",
+    "天羽まどか",
+    "黒沢凛",
+    "姫里マリア",
+    "藤原みやび",
+    "栗栖ここね",
+    "堂島ニーナ",
+    "大地のの",
+    "白樺リサ",
+    "星宮りんご",
+    "光石織姫",
+    "星宮らいち",
+    "ジョニー別府",
+    "涼川直人",
+    "瀬名翼",
+    "四ツ葉春",
+];
 
-var RssList = React.createClass({
-  render: function() {
-    var rssNodes = this.props.data.map(function (rss) {
-      return (
-        <div className="rss" key={rss.id}>
-          <h3 className="title">
-            <a href={rss.link}>
-              {rss.title}
-            </a>
-          </h3>
-          <p className="updated">{rss.updated}</p>
-          <p className="summary">{rss.summary}</p>
-        </div>
-      );
+function render() {
+    entries.forEach(e => {
+        let elm = '<li class="mdl-list__item"><span class="mdl-list__item-primary-content"><a href="/entry/'+e+'">'+e+'</a></span></li>';
+        $("#container").append(elm);
     });
-    return (
-      <div className="rssList">
-        {rssNodes}
-      </div>
-    );
-  }
-});
+}
 
-ReactDOM.render(
-  <RssBox url="/api/rss" pollInterval={2000000} />,
-  document.getElementById('content')
-);
+render();
