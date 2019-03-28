@@ -51,6 +51,11 @@ def index():
     return render_template('index.html')
 
 
+@app.route("/recent")
+def recent():
+    return render_template('recent.html')
+
+
 @app.route("/entry/<entry_name>")
 def entry(entry_name):
     if entry_name not in entries:
@@ -61,12 +66,25 @@ def entry(entry_name):
 
 @app.route("/api/v1/history/")
 def api_history():
-    for ranking in recent_rankings(hour_range=3):
-        print(
-            ranking.rank,
-            ranking.entry.name,
-            ranking.ranking_log.created.isoformat(timespec='seconds'),
-        )
+    response = []
+
+    rankings = recent_rankings(hour_range=24)
+    # 40*24 is nearly 1000
+    # if len(rankings) > 2000:
+    #     abort(404)
+
+    for ranking in rankings:
+        response.append({
+            'rank': ranking.rank,
+            'name': ranking.entry.name,
+            'timestamp': ranking.ranking_log.created.isoformat(timespec='seconds'),
+        })
+
+    return Response(
+        json.dumps(response, ensure_ascii=False),
+        mimetype='application/json',
+        headers=api_headers,
+    )
 
 
 @app.route("/api/v1/entry/<entry_name>")

@@ -12,12 +12,13 @@ function render() {
         e.forEach(entry => {
             rows.push(
                 '<tr><td class="mdl-data-table__cell--non-numeric">' +
-                moment(entry.timestamp).format('MM月DD日 HH時') +
-                '</td><td>' + entry.rank + '</td></tr>'
+                    moment(entry.timestamp).format('MM月DD日 HH時') +
+                    '</td><td>' + entry.rank + '</td></tr>'
             );
         });
         $('#rows').append(rows);
     });
 }
+
 
 render();
