@@ -1,5 +1,5 @@
 function render() {
-    $.ajax('/api/v1/history/').done(e => {
+    $.ajax('/api/v1/history').done(e => {
         let rankingLog = {};
         e.forEach(entry => {
             if (!rankingLog.hasOwnProperty(entry.timestamp)) {

@@ -64,7 +64,7 @@ def entry(entry_name):
     return render_template('entry.html', entry=entry_name)
 
 
-@app.route("/api/v1/history/")
+@app.route("/api/v1/history")
 def api_history():
     response = []
 
