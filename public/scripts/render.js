@@ -39,7 +39,7 @@ const entries = [
 function render() {
     entries.forEach(e => {
         let elm = '<li class="mdl-list__item"><span class="mdl-list__item-primary-content"><a href="/entry/'+e+'">'+e+'</a></span></li>';
-        $("#container").append(elm);
+        $("#entries").append(elm);
     });
 }
 
