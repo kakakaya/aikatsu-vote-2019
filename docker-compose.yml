@@ -5,6 +5,7 @@ services:
     build: ./
     volumes:
       - .:/app
+      - /home/kakakaya:/host
     ports:
       - "12019:80"
     environment:

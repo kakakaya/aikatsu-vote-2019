@@ -9,12 +9,12 @@ from models import init_db, save_ranking, recent_rankings, recent_rankings_for_e
 
 def get_ranking():
     cookies = {
-        '_bpnavi_session': 'd5b93e9d224ecb6c2fcca0b74c7dfbd3',
+        '_bpnavi_session': '082bb45194e83c8c1835dc5413275a40',
     }
 
     headers = {
         'Origin': 'https://bpnavi.jp',
-        'X-CSRF-Token': 'L08DDxWshjC3nOcupgNfMkwYSvOtV8NiI/DXKkeJ2is=',
+        'X-CSRF-Token': 'sx6Zin/gouZWlEjguoWqztdaZD+W+LDutNJFNvRNY7E=',
         'User-Agent': 'iPhone',
         'Referer': 'https://bpnavi.jp/s/elec/aikatsu_p5/item_rankings',
     }
