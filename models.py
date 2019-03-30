@@ -1,7 +1,7 @@
 import datetime
 from peewee import SqliteDatabase, Model, TextField, DateTimeField, ForeignKeyField, IntegerField, JOIN
 
-DATABASE = "dev_ranking.db"
+DATABASE = "/host/ranking.db"
 
 db = SqliteDatabase(DATABASE)
 
