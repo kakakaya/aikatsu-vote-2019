@@ -10,59 +10,56 @@ function render() {
         $('h1#entry').text(entry);
     }
 
-    let dialog = document.querySelector('dialog');
-
     $.ajax({
         url: '/api/v1/entry/' + entry
     }).done(e => {
-        console.log(this);
-        let thisRender = this;
-
-        let rows = [];
+        let rankingLog = {};
         e.forEach(entry => {
-            rows.push(
-                '<tr class="entry-row"><td class="mdl-data-table__cell--non-numeric">' +
-                    moment(entry.timestamp).format('MM月DD日 HH時') +
-                    '</td><td>' + entry.rank + '</td><td>' +
-                    '<a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-url="https://example.com" data-text="tweet_text" data-hashtags="アイカツ総選挙2019" data-related="kakakaya" data-show-count="false">Tweet</a>' +
-                    '</td></tr >'
-            );
+            let entry_date = moment(entry.timestamp);
+            let date_str = entry_date.format('YYYY-MM-DD');
+            let hour_str = entry_date.format('H');
+
+            if (!rankingLog.hasOwnProperty(date_str)) {
+                rankingLog[date_str] = {};
+            }
+            rankingLog[date_str][hour_str] = entry;
         });
-        $('#rows').append(rows);
+        let days = Object.keys(rankingLog);
+        days.sort().reverse();
 
-        // window.twttr = (function(d, s, id) {
-        //     var js, fjs = d.getElementsByTagName(s)[0],
-        //         t = window.twttr || {};
-        //     if (d.getElementById(id)) return t;
-        //     js = d.createElement(s);
-        //     js.id = id;
-        //     js.src = "https://platform.twitter.com/widgets.js";
-        //     fjs.parentNode.insertBefore(js, fjs);
+        days.forEach(e => {
+            let thead = '<thead>' + '<th class="mdl-data-table__cell--non-numeric">' + (moment(e).format('MM月DD日')) + '</th>' + '</thead>';
 
-        //     t._e = [];
-        //     t.ready = function(f) {
-        //         t._e.push(f);
-        //     };
+            let rows = '';
+            console.log(rankingLog[e]);
+            for (var i = 0; i < 24; i++) {
+                let entry = rankingLog[e][i];
+                if (entry === undefined) {
+                    entry = {
+                        rank: '？',
+                        name: '？取得失敗',
+                    };
+                }
+                console.log(entry);
 
-        //     return t;
-        // }(document, "script", "twitter-wjs"));
+                rows += '<tr>' +
+                    '<td class="mdl-data-table__cell--non-numeric">' +
+                    ('0' + i).slice(1) + '時'+
+                    '</td><td class="mdl-data-table__cell--non-numeric">' +
+                    (entry.rank==='？'?entry.rank:entry.rank+1) + '位' +
+                    '</td><td class="mdl-data-table__cell--non-numeric">' +
+                    entry.name.slice(1) +
+                    '</td>' +
+                    '</tr>';
+            }
+
+            let tbody = '<tbody>' + rows + '</tbody>';
+            let table = '<table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">' + thead + tbody + '</table>';
+            $("#container").append(table);
+
+        });
+
     });
-
-    $('.close').on('click', () => {
-        dialog.close();
-        $('#twitter-share-link').remove();
-    });
-
-
-
-    // let showDialogButton = document.querySelector('#show-dialog');
-
-    // if (! dialog.showModal) {
-    //     dialogPolyfill.registerDialog(dialog);
-    // }
-    // showDialogButton.addEventListener('click', function() {
-    //     dialog.showModal();
-    // });
 }
 
 render();
