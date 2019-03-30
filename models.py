@@ -83,7 +83,7 @@ def recent_rankings_for_entry(entry_name, desc=True, hour_range=24):
         ).join_from(
             EntryRankingLog,
             RankingLog,
-        ).where(EntryRankingLog.ranking_log.in_(recent_logs) & Entry.name % "*{}*".format(entry_name))
+        ).where(EntryRankingLog.ranking_log.in_(recent_logs) & Entry.name % "*{}*".format("*".join(list(entry_name))))
     )
 
     return query
