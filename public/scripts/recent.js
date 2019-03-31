@@ -17,15 +17,11 @@ function render() {
         let times = Object.keys(rankingLog);
         times.sort().reverse();
 
-        // let thead = [];
-        // let tbody = [];
-
-
         times.forEach(e => {
             let thead = '<thead>' + '<th class="mdl-data-table__cell--non-numeric">' + (moment(e).format('MM月DD日 HH時')) + '</th>' + '</thead>';
 
             let rows = '';
-            console.log(rankingLog[e]);
+            // console.log(rankingLog[e]);
             rankingLog[e].forEach((entry, rank)=> {
                 rows += '<tr><td class="mdl-data-table__cell--non-numeric">' +
                     rank + '位' + entry.slice(1) +
