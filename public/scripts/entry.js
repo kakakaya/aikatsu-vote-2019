@@ -40,13 +40,12 @@ function render() {
                         name: '？取得失敗',
                     };
                 }
-                console.log(entry);
 
                 rows += '<tr>' +
                     '<td class="mdl-data-table__cell--non-numeric">' +
                     ('0' + i).slice(1) + '時'+
                     '</td><td class="mdl-data-table__cell--non-numeric">' +
-                    (entry.rank==='？'?entry.rank:entry.rank+1) + '位' +
+                    entry.rank + '位' +
                     '</td><td class="mdl-data-table__cell--non-numeric">' +
                     entry.name.slice(1) +
                     '</td>' +

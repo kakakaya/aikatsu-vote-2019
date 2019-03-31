@@ -24,7 +24,7 @@ function render() {
             // console.log(rankingLog[e]);
             rankingLog[e].forEach((entry, rank)=> {
                 rows += '<tr><td class="mdl-data-table__cell--non-numeric">' +
-                    rank + '位' + entry.slice(1) +
+                    (rank+1) + '位' + entry.slice(1) +
                     '</td></tr>';
 
             });
